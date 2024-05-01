@@ -1,15 +1,11 @@
 import socket
-
-s = socket.socket()
-s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-s.bind(('0.0.0.0', 10013))
-s.listen(0)
-
-while True:
-    client, addr = s.accept()
-
-    data = "202"
-
-    client.send(data.encode())
-
-    client.close()
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 12345)
+client_socket.connect(server_address)
+try:
+    message = "ini klien"
+    client_socket.sendall (message.encode())
+    data = client_socket.recv(1024)
+    print("Menerima dari server:", data.decode())
+finally:
+    client_socket.close()
